@@ -1,5 +1,5 @@
 # 06 Mayo 2017, maqueta del engine central de monitoreo movimientos de placas.
-# Versión 0.1.0.0
+# Versión 0.1
 
 from flask import Flask
 import pyodbc
