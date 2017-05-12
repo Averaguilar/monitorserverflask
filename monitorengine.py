@@ -44,8 +44,8 @@ def regMovimiento(placa='RB64322', horaDeRegistro='2017-05-09 2020:06:33.144165'
 
     cursor.execute("INSERT INTO BITACORA_MOVIMIENTOS(ID_PLACA, TIPO_MOVIMIENTO, PUNTO_LECTURA, HORA_LECTURA, FECHA_LECTURA) values (?, ?, ?, ?, ?)", idPlaca, movimiento, punto, horaDeRegistro, horaDeRegistro)
     cnxn.commit()
-
-    return horaDeRegistro + ", placa " + placa + ", municipio " + municipio + ", movimiento " + movimiento + ", punto de acceso " + str(punto) + ", nombre " + nombre + " " + apellido
+    return ('', 204)
+    # return horaDeRegistro + ", placa " + placa + ", municipio " + municipio + ", movimiento " + movimiento + ", punto de acceso " + str(punto) + ", nombre " + nombre + " " + apellido
 
 if __name__ == '__main__':
     app.run('127.0.0.1', port=8080, debug = True)
