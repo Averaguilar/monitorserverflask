@@ -6,17 +6,25 @@ import pyodbc
 
 app = Flask(__name__)
 
-@app.errorhandler(404) # función para atrapar el error 400 pagina no encontrada
+@app.errorhandler(404) 
 def noloenconte(error):
     return "no existe esa pag."
 
-@app.route(r'/') # Esto define un URL desde el cual la fincion ini() de abajo definira que se regresa en ese URL
+@app.route(r'/') 
 def init():
     return "I am alive: Monitoreo Engine"
 
-@app.route(r'/post/')
-@app.route(r'/post/<placa>/<horaDeRegistro>/<movimiento>/<punto>')
-# def tunombre(nombre='slenderman', edad='300'):
+@app.route(r'/enviaplaca') 
+def tienesque():
+    return "tienes que enviar una placa!!"
+
+@app.route(r'/enviaplaca/<placa>')
+def echoplaca():
+    return "Numero de placa: {}".format(placa)
+
+# @app.route(r'/enviaplaca/<placa>/<horaDeRegistro>')
+# @app.route(r'/enviaplaca/<placa>/<horaDeRegistro>/<movimiento>')
+@app.route(r'/enviaplaca/<placa>/<horaDeRegistro>/<movimiento>/<int:punto>', methods=["GET"])
 def regMovimiento(placa='RB64322', horaDeRegistro='2017-05-09 2020:06:33.144165', movimiento='S', punto=1):
     cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER=AUGUSTO-LENOVO\SQLEXPRESS;DATABASE=MONITORPLACAS')
     cursor = cnxn.cursor()
@@ -36,18 +44,8 @@ def regMovimiento(placa='RB64322', horaDeRegistro='2017-05-09 2020:06:33.144165'
 
     cursor.execute("INSERT INTO BITACORA_MOVIMIENTOS(ID_PLACA, TIPO_MOVIMIENTO, PUNTO_LECTURA, HORA_LECTURA, FECHA_LECTURA) values (?, ?, ?, ?, ?)", idPlaca, movimiento, punto, horaDeRegistro, horaDeRegistro)
     cnxn.commit()
-    # print("consulta > " + SQLcommand)
-    # print("resultado > ", tables)
+
     return horaDeRegistro + ", placa " + placa + ", municipio " + municipio + ", movimiento " + movimiento + ", punto de acceso " + str(punto) + ", nombre " + nombre + " " + apellido
 
-# @app.before_request # ejecuta funcion antes de la peticion del URL, por ejemplo logear antes de conectar a BD.
-# def antes_peticion():
-#     if 'username' not in session and request.endpoint in ['home','busqueda','titulo']:
-#         return redirect(url_for('login'))
-
-# @app.after_request # ejecuta funcion despues de la peticion de URL, por ejemplo cerrar conexion BD
-# def despues_peticion(peticion):
-#     return peticion
-
 if __name__ == '__main__':
-    app.run('127.0.0.1', port=5000, debug = True)
+    app.run('127.0.0.1', port=8080, debug = True)
